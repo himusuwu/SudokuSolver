@@ -3,12 +3,20 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
+#include <random>
+#include <chrono>  
+
+struct FieldList
+{
+    size_t row;
+    size_t col;
+};
 
 int main()
 {   
     srand( time( nullptr ) );
 
-    //Solved sudoku board
+    //Solved Sudoku board
     std::vector<std::vector<int>> sudoku_table = 
     {
         {
@@ -23,6 +31,8 @@ int main()
         {3, 4, 5, 2, 8, 6, 1, 7, 9}
         }
     };
+
+    //Shuffle Sudoku board -------------------
 
     size_t random_1 = (std::rand() % 8) + 1;
     size_t random_2 = (std::rand() % 8) + 1;
@@ -95,6 +105,21 @@ int main()
         sudoku_table = tmp_sudoku;
     }
 
+    //-------------------------------
+
+    std::vector<FieldList> field_list;
+
+    for(size_t row = 0; row < sudoku_table.size(); row++)
+    {
+        for(size_t col = 0; col < sudoku_table[row].size(); col++)
+        {
+            field_list.push_back({row, col});
+        }
+    }
+
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::shuffle(field_list.begin(), field_list.end(), std::default_random_engine(seed));
+
     //Tests
     //std::cout << random_1 << " " << random_2 << std::endl << std::endl;
 
@@ -109,6 +134,15 @@ int main()
     }
 
     std::cout << std::endl;
+
+    /*
+    for(const auto& x : field_list)
+    {
+        std::cout << x.col << ", " << x.row << std::endl;
+    }
+
+    std::cout << std::endl;
+    */
 
     return 0;
 }
