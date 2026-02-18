@@ -3,7 +3,7 @@ project(SudokuSolver)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES src/main.cpp src/shuffle_board.cpp src/sudoku_grid.cpp src/sudoku_generator.cpp)
+set(SOURCE_FILES src/main.cpp src/shuffle_board.cpp src/sudoku_grid.cpp src/sudoku_generator.cpp src/sudoku_solver.cpp)
 
 include_directories(include)
 

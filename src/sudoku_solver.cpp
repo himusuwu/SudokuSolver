@@ -35,7 +35,7 @@ bool is_valid(std::vector<std::vector<int>>& board, size_t row, size_t col, int 
     return true;
 }
 
-bool can_be_solved(std::vector<std::vector<int>>& tmp_sudoku_table)
+bool solve(std::vector<std::vector<int>>& tmp_sudoku_table)
 {
     for(size_t row = 0; row < tmp_sudoku_table.size(); row++)
     {
@@ -49,7 +49,7 @@ bool can_be_solved(std::vector<std::vector<int>>& tmp_sudoku_table)
                     {
                         tmp_sudoku_table[row][col] = possible_digit;
 
-                        if(can_be_solved(tmp_sudoku_table))
+                        if(solve(tmp_sudoku_table))
                         {
                             return true;
                         }
@@ -57,18 +57,61 @@ bool can_be_solved(std::vector<std::vector<int>>& tmp_sudoku_table)
                         tmp_sudoku_table[row][col] = 0;
                     }
                 }
-            }
 
-            return false;
+                return false;
+            }
         }
     }
 
     return true;
 }
 
+void can_be_solved_and_is_unique(std::vector<std::vector<int>>& tmp_sudoku_table, size_t& solutions)
+{
+    for(size_t row = 0; row < tmp_sudoku_table.size(); row++)
+    {
+        for(size_t col = 0; col < tmp_sudoku_table[row].size(); col++)
+        {
+            if(tmp_sudoku_table[row][col] == 0)
+            {
+                for(size_t possible_digit = 1; possible_digit <= 9; possible_digit++)
+                {
+                    if(is_valid(tmp_sudoku_table, row, col, possible_digit))
+                    {
+                        tmp_sudoku_table[row][col] = possible_digit;
+
+                        can_be_solved_and_is_unique(tmp_sudoku_table, solutions);
+
+                        if(solutions > 1)
+                        {
+                            tmp_sudoku_table[row][col] = 0;
+                            return;
+                        }
+
+                        tmp_sudoku_table[row][col] = 0;
+                    }
+                }
+
+                return;
+            }
+        }
+    }
+
+    solutions++;
+}
+
+bool check_unique(std::vector<std::vector<int>> tmp_sudoku_table)
+{
+    size_t solutions{};
+    
+    can_be_solved_and_is_unique(tmp_sudoku_table, solutions);
+
+    return solutions == 1;
+}
+
 std::vector<std::vector<int>> sudoku_solver(std::vector<std::vector<int>>& tmp_sudoku_table)
 {
-    can_be_solved(tmp_sudoku_table);
+    solve(tmp_sudoku_table);
 
     return tmp_sudoku_table;
 }

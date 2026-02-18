@@ -8,11 +8,16 @@ int main()
 {   
     srand( time( nullptr ) );
 
+    size_t difficulty{};
+
+    std::cout << "Choose difficulty (1, 2, 3, 4): " << std::endl;
+    std::cin >> difficulty;
+
     std::vector<std::vector<int>> sudoku_table = sudoku_grid();
 
     shuffle_board(sudoku_table);
 
-    sudoku_generator(sudoku_table);
+    sudoku_table = sudoku_generator(sudoku_table, difficulty);
 
     //Tests
     //std::cout << random_1 << " " << random_2 << std::endl << std::endl;

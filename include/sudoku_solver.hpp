@@ -4,5 +4,6 @@
 #include <vector>
 
 std::vector<std::vector<int>> sudoku_solver(std::vector<std::vector<int>>& tmp_sudoku_table);
+bool check_unique(std::vector<std::vector<int>> tmp_sudoku_table);
 
 #endif
